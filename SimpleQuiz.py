@@ -10,11 +10,9 @@ def readFile(filename):
     raw.close()
     return data
 
-def parseAnswer(question, class_level):
-    question_id = question['id']
-    if class_level == 'tech':
-        question_id = question_id.split('(')
-        return question_id[1][0:1].lower()
+def parseAnswer(question):
+    question_id = question['id'].split('(')
+    return question_id[1][0:1].lower()
 
 def runQuiz(question_pool):
     SCORE = 0
@@ -26,7 +24,7 @@ def runQuiz(question_pool):
             if letter in question:
                 print("\t" + letter + ' - ' + question[letter])
         user_answer = input(" > ").lower()
-        correct_answer = parseAnswer(question, 'tech')
+        correct_answer = parseAnswer(question)
         if user_answer == correct_answer:
             SCORE += 1
             print("Correct!")
@@ -37,9 +35,17 @@ def runQuiz(question_pool):
         print("\n")
 
 if __name__ == '__main__':
-    current_class = TECH
-
-    print("Starting simple Python quiz for " + current_class + "....\n")
+    print("Starting simple Python quiz.")
+    print("Press CTRL + C at any time to quit.\n")
+    print("Choose a class leve:\n\t1. Tech\n\t2. General\n\t3. Extra")
+    current_class = int(input(" > "))
+    if current_class == 1:
+        current_class = TECH
+    if current_class == 2:
+        current_class = GENERAL
+    if current_class == 3:
+        current_class = EXTRA
+    
+    print("\nOpening question pool: " + current_class + "\n")
     question_pool = readFile(current_class)
     runQuiz(question_pool)
-    
